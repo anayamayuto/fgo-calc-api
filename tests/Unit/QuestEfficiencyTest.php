@@ -16,4 +16,18 @@ class QuestEfficiencyTest extends TestCase
 
         $this->assertSame(40.0, $result);
     }
+
+    public function test_一番効率のいいクエストを選べる(): void
+    {
+        $service = new QuestEfficiencyService();
+
+        $quests = [
+            ['name' => '未確認座標X-C', 'stamina' => 7, 'dropRate' => 0.6],
+            ['name' => '未確認座標X-D', 'stamina' => 5, 'dropRate' => 0.3],
+        ];
+
+        $result = $service->bestQuest($quests);
+
+        $this->assertSame('未確認座標X-C', $result);
+    }
 }

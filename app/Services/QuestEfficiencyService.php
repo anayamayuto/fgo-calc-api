@@ -6,6 +6,10 @@ class QuestEfficiencyService
 {
     public function apPerDrop(int $staminaCost, float $dropRate): float
     {
+        if ($dropRate <= 0) {
+            throw new \InvalidArgumentException('ドロップ率は0より大きい必要があります');
+        }
+        
         return $staminaCost / $dropRate;
     }
 

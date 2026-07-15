@@ -30,4 +30,15 @@ class QuestEfficiencyTest extends TestCase
 
         $this->assertSame('未確認座標X-C', $result);
     }
+
+    public function test_ドロップ率が0なら例外を投げる(): void
+    {
+        $service = new QuestEfficiencyService();
+
+        // このあと例外(InvalidArgumentException)が投げられることを期待する宣言
+        $this->expectException(\InvalidArgumentException::class);
+
+        // ドロップ率0で呼ぶ → 例外が飛ぶはず
+        $service->apPerDrop(20, 0);
+    }
 }

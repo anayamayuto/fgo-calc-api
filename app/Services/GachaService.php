@@ -16,4 +16,15 @@ class GachaService
 
         return 'other';
     }
+
+    public function drawWithCeiling(float $roll, int $pullNumber): string
+    {
+        // 天井: 330連目以降なら、乱数に関係なく確定ピックアップ
+        if ($pullNumber >= 330) {
+            return 'pickup';
+        }
+
+        // それ以外は通常抽選(pullResultを再利用)
+        return $this->pullResult($roll);
+    }
 }

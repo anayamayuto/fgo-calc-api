@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Services;
+use App\Models\Quest;
 
 class QuestEfficiencyService
 {
@@ -30,5 +31,18 @@ class QuestEfficiencyService
         }
 
         return $bestName;
+    }
+
+    public function bestStoredQuest(): string
+    {
+        $quests = Quest::all()->map(function ($quest) {
+            return [
+                'name' => $quest->name,
+                'stamina' => (int) $quest->stamina,
+                'dropRate' => (float) $quest->drop_rate,
+            ];
+        })->all();
+
+        return $this->bestQuest($quests);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 use App\Models\Quest;
+use App\Models\QuestDrop;
 
 class QuestEfficiencyService
 {
@@ -44,5 +45,26 @@ class QuestEfficiencyService
         })->all();
 
         return $this->bestQuest($quests);
+    }
+
+    public function rankQuestsForItem(int $itemId): array
+    {
+        // その素材が落ちるドロップ情報を、繋がったクエストごと取得
+        $drops = QuestDrop::with('quest')
+            ->where('item_id', $itemId)
+            ->get();
+
+        // 各クエストのAP効率を計算して配列にする
+        $ranking = $drops->map(function ($drop) {
+            return [
+                'name' => $drop->quest->name,
+                'ap_per_drop' => $this->apPerDrop((int) $drop->quest->stamina, (float) $drop->drop_rate),
+            ];
+        })->all();
+
+        // AP効率が良い順(APが小さい順)に並べ替え
+        usort($ranking, fn ($a, $b) => $a['ap_per_drop'] <=> $b['ap_per_drop']);
+
+        return $ranking;
     }
 }

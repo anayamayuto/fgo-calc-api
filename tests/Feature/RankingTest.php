@@ -33,4 +33,19 @@ class RankingTest extends TestCase
         $this->assertSame('クエストA', $ranking[0]['name']);
         $this->assertSame('クエストB', $ranking[1]['name']);
     }
+
+    public function test_ランキングをAPIで取得できる(): void
+    {
+        $bone = Item::create(['name' => '凶骨']);
+        $questA = Quest::create(['name' => 'クエストA', 'stamina' => 7, 'drop_rate' => 0.1]);
+        $questB = Quest::create(['name' => 'クエストB', 'stamina' => 5, 'drop_rate' => 0.1]);
+        QuestDrop::create(['quest_id' => $questA->id, 'item_id' => $bone->id, 'drop_rate' => 0.6]);
+        QuestDrop::create(['quest_id' => $questB->id, 'item_id' => $bone->id, 'drop_rate' => 0.3]);
+
+        $response = $this->getJson("/api/materials/{$bone->id}/quests");
+
+        $response->assertOk();
+        // 1位がクエストAであること
+        $response->assertJsonPath('ranking.0.name', 'クエストA');
+    }
 }

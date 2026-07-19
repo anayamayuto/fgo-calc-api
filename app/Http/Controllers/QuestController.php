@@ -22,4 +22,17 @@ class QuestController extends Controller
             JSON_UNESCAPED_UNICODE
         );
     }
+
+    public function ranking(int $item): JsonResponse
+    {
+        $service = new QuestEfficiencyService();
+        $ranking = $service->rankQuestsForItem($item);
+
+        return response()->json(
+            ['ranking' => $ranking],
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
+    }
 }

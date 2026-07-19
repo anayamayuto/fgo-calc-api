@@ -27,4 +27,17 @@ class GachaService
         // それ以外は通常抽選(pullResultを再利用)
         return $this->pullResult($roll);
     }
+
+    public function countPickups(array $rolls): int
+    {
+        $count = 0;
+
+        foreach ($rolls as $roll) {
+            if ($this->pullResult($roll) === 'pickup') {
+                $count++;
+            }
+        }
+
+        return $count;
+    }
 }

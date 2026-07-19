@@ -53,4 +53,17 @@ class GachaTest extends TestCase
 
         $this->assertSame('other', $result);
     }
+
+    public function test_pickupの回数を数えられる(): void
+    {
+        $service = new GachaService();
+
+        // 0.005=pickup, 0.9=other, 0.007=pickup, 0.5=other
+        $rolls = [0.005, 0.9, 0.007, 0.5];
+
+        $result = $service->countPickups($rolls);
+
+        // pickupは2回のはず
+        $this->assertSame(2, $result);
+    }
 }

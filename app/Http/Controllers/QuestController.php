@@ -12,6 +12,11 @@ class QuestController extends Controller
         $service = new QuestEfficiencyService();
         $bestQuest = $service->BestStoredQuest();
 
-        return response()->json(['best_quest' => $bestQuest]);
+        return response()->json(
+            ['best_quest' => $bestQuest],
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
     }
 }

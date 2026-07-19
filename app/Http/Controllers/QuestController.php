@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\QuestEfficiencyService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
+use App\Models\Item;
 
 class QuestController extends Controller
 {
@@ -30,6 +31,18 @@ class QuestController extends Controller
 
         return response()->json(
             ['ranking' => $ranking],
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
+    }
+
+    public function materials(): JsonResponse
+    {
+        $materials = Item::all(['id', 'name']);
+
+        return response()->json(
+            ['materials' => $materials],
             200,
             [],
             JSON_UNESCAPED_UNICODE

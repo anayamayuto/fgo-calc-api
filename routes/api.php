@@ -11,3 +11,5 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('/materials/{item}/quests', [QuestController::class, 'ranking']);
+
+Route::get('/materials', [QuestController::class, 'materials']);

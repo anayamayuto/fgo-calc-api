@@ -48,4 +48,15 @@ class RankingTest extends TestCase
         // 1位がクエストAであること
         $response->assertJsonPath('ranking.0.name', 'クエストA');
     }
+
+    public function test_素材一覧をAPIで取得できる(): void
+    {
+        Item::create(['name' => '凶骨']);
+        Item::create(['name' => '虚影の塵']);
+
+        $response = $this->getJson('/api/materials');
+
+        $response->assertOk();
+        $response->assertJsonCount(2, 'materials');
+    }
 }
